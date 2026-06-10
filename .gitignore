@@ -1,0 +1,17 @@
+# Development files
+CLAUDE.md
+AGENTS.md
+gen_bgm.js
+gen_click.js
+compress.js
+convert-audio.js
+node_modules/
+package-lock.json
+package.json
+
+# Old photos directory (replaced by images/)
+照片/
+
+# System files
+.DS_Store
+Thumbs.db

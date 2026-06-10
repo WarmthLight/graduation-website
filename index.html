@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>毕业季 - 数字媒体技术的浪漫</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="custom-cursor"></div>
+  <div class="cursor-trail"></div>
+  <div class="cursor-bug-text">NullPointerException</div>
+
+  <!-- Audio Controls -->
+  <button id="bgmToggle" class="bgm-toggle" title="背景音乐">♫</button>
+
+  <!-- Scene 1: Entrance -->
+  <section id="scene1" class="scene active">
+    <canvas id="codeRain"></canvas>
+    <div class="scene1-content">
+      <div class="single-photo">
+        <img src="images/portrait/单人.jpg" alt="单人照">
+      </div>
+      <h1 class="title">欢迎来到毕业季副本</h1>
+      <div class="village-gate">
+        <p class="question">是否准备离开新手村？</p>
+        <button id="enterBtn" class="pixel-btn">
+          <span class="btn-text">是</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 2: Meteor Shower -->
+  <section id="scene2" class="scene">
+    <canvas id="meteorShower"></canvas>
+  </section>
+
+  <!-- Scene 3: Certificates -->
+  <section id="scene3" class="scene">
+    <div class="certificate-bg">
+      <img src="images/portrait/剑来.jpg" alt="剑来" class="bg-blur">
+    </div>
+    <div class="certificate-hall">
+      <h2 class="hall-title">你的成就已解锁</h2>
+      <div class="certificate-ring">
+        <div class="certificate" data-name="实用新型专利证书">
+          <img src="images/certificate/实用新型专利证书.jpg" alt="专利证书">
+          <span class="cert-name">实用新型专利证书</span>
+        </div>
+        <div class="certificate" data-name="青年科普实验创新">
+          <img src="images/certificate/青年科普实验创新.jpg" alt="科普创新">
+          <span class="cert-name">青年科普实验创新</span>
+        </div>
+        <div class="certificate" data-name="计算机应用大赛">
+          <img src="images/certificate/计算机应用大赛.jpg" alt="计算机大赛">
+          <span class="cert-name">计算机应用大赛</span>
+        </div>
+        <div class="certificate" data-name="省赛C++三等奖">
+          <img src="images/certificate/provincial-cpp.jpg" alt="省赛三等奖">
+          <span class="cert-name">省赛C++三等奖</span>
+        </div>
+        <div class="certificate" data-name="第八届互联网+">
+          <img src="images/certificate/第八届互联网+.jpg" alt="互联网+">
+          <span class="cert-name">第八届互联网+</span>
+        </div>
+        <div class="certificate" data-name="第九届互联网+">
+          <img src="images/certificate/第九届互联网＋.jpg" alt="互联网+">
+          <span class="cert-name">第九届互联网+</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 4: Gallery -->
+  <section id="scene4" class="scene">
+    <canvas id="galleryBg"></canvas>
+    <div class="gallery-container">
+      <div class="gallery-item" data-label="双人合照">
+        <img src="images/portrait/双人.jpg" alt="双人照">
+      </div>
+      <div class="gallery-item" data-label="群像合照">
+        <img src="images/portrait/群像.jpg" alt="群像照">
+      </div>
+    </div>
+  </section>
+
+  <!-- Scene 5: Heart -->
+  <section id="scene5" class="scene">
+    <canvas id="starsBg"></canvas>
+    <div class="graduation-message"></div>
+    <div class="restart-hint">
+      <span>[ 点击任意位置重新开始 ]</span>
+    </div>
+  </section>
+
+  <!-- Audio -->
+  <audio id="bgm" preload="auto" loop>
+    <source src="audio/bgm.wav" type="audio/wav">
+  </audio>
+  <audio id="clickSound" preload="auto">
+    <source src="audio/click.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="js/particles.js"></script>
+  <script src="js/certificates.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
