@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/certificate/实用新型专利证书.jpg', 'images/certificate/青年科普实验创新.jpg',
     'images/certificate/计算机应用大赛.jpg',
     'images/certificate/provincial-cpp.jpg',
-    'images/certificate/第八届互联网+.jpg', 'images/certificate/第九届互联网＋.jpg'
+    'images/certificate/第八届互联网plus.jpg', 'images/certificate/第九届互联网plus.jpg'
   ];
 
   let loaded = 0;
