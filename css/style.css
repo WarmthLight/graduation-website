@@ -622,12 +622,13 @@ body {
   .gallery-item { width: min(320px, 45vw); height: min(400px, 60vh); }
   .certificate-ring { width: min(85vw, 450px); height: min(65vh, 400px); }
   .certificate { width: min(110px, 18vw); height: min(140px, 22vh); }
+  .char-container { transform: scale(0.7); transform-origin: center center; }
 }
 
 @media (max-width: 600px) {
   .gallery-container { flex-direction: column; gap: 20px; }
   .gallery-item { width: min(300px, 85vw); height: min(380px, 45vh); }
-  .single-photo { width: 220px; height: 220px; }
+  .single-photo { width: 130px; height: 130px; margin-bottom: 24px; }
   .certificate-ring { width: min(90vw, 350px); height: min(60vh, 350px); }
   .certificate { width: min(80px, 15vw); height: min(100px, 18vh); }
   .speech-bubble { min-width: 48px; height: 30px; font-size: 0.5rem; }
@@ -636,10 +637,10 @@ body {
   .village-gate { padding: 20px 24px; }
   .question { font-size: 1rem; margin-bottom: 16px; }
   .pixel-btn { padding: 12px 36px; font-size: 0.9rem; }
-  .single-photo { width: 130px; height: 130px; margin-bottom: 24px; }
   .title { margin-bottom: 24px; }
   .graduation-message { height: 60%; }
   .restart-hint { bottom: 24px; font-size: 0.75rem; }
+  .char-container { transform: scale(0.5); transform-origin: center center; }
 }
 
 /* ===== Touch Device: hide custom cursor ===== */
