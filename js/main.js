@@ -259,7 +259,7 @@ class GraduationWebsite {
 
     /* Prevent iOS rubber-band overscroll */
     document.body.addEventListener('touchmove', (e) => {
-      if (e.target.closest('.cert-lightbox')) return; /* allow lightbox scroll */
+      if (e.target.closest('.cert-lightbox')) return;
       e.preventDefault();
     }, { passive: false });
 
@@ -270,6 +270,108 @@ class GraduationWebsite {
     window.addEventListener('orientationchange', () => {
       setTimeout(() => this._handleResize(), 200);
     });
+
+    /* 1. Touch Ripple Effect */
+    this._initTouchRipple();
+
+    /* 2. Touch Particle Trail */
+    this._initTouchTrail();
+
+    /* 3. Gyroscope Parallax */
+    this._initGyroParallax();
+
+    /* 4. Swipe Scene Transition */
+    this._initSwipeTransition();
+  }
+
+  /* ---- 1. Touch Ripple ---- */
+  _initTouchRipple() {
+    const colors = ['#d4a853', '#c9787e', '#8b7ec8', '#6ba3be', '#6bc9a8'];
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      const ripple = document.createElement('div');
+      ripple.className = 'touch-ripple';
+      ripple.style.left = touch.clientX + 'px';
+      ripple.style.top = touch.clientY + 'px';
+      ripple.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+      document.body.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 800);
+    }, { passive: true });
+  }
+
+  /* ---- 2. Touch Particle Trail ---- */
+  _initTouchTrail() {
+    const colors = ['#d4a853', '#c9787e', '#8b7ec8', '#6ba3be', '#6bc9a8'];
+    let lastTime = 0;
+    document.addEventListener('touchmove', (e) => {
+      const now = Date.now();
+      if (now - lastTime < 50) return;
+      lastTime = now;
+      const touch = e.touches[0];
+      for (let i = 0; i < 3; i++) {
+        const p = document.createElement('div');
+        p.className = 'touch-trail';
+        const offsetX = (Math.random() - 0.5) * 20;
+        const offsetY = (Math.random() - 0.5) * 20;
+        p.style.left = (touch.clientX + offsetX) + 'px';
+        p.style.top = (touch.clientY + offsetY) + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.boxShadow = `0 0 6px ${colors[Math.floor(Math.random() * colors.length)]}`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 600);
+      }
+    }, { passive: true });
+  }
+
+  /* ---- 3. Gyroscope Parallax ---- */
+  _initGyroParallax() {
+    if (!window.DeviceOrientationEvent) return;
+    const scenes = document.querySelectorAll('.scene');
+    window.addEventListener('deviceorientation', (e) => {
+      const beta = e.beta || 0;   // front-back tilt (-180~180)
+      const gamma = e.gamma || 0; // left-right tilt (-90~90)
+      const x = Math.max(-15, Math.min(15, gamma)) / 15; // normalize to -1~1
+      const y = Math.max(-15, Math.min(15, beta - 45)) / 15;
+      scenes.forEach(scene => {
+        if (!scene.classList.contains('active')) return;
+        const canvas = scene.querySelector('canvas');
+        if (canvas) {
+          canvas.style.transform = `translate(${x * 8}px, ${y * 8}px)`;
+        }
+        const content = scene.querySelector('.scene1-content, .certificate-hall, .gallery-container, .graduation-message');
+        if (content) {
+          content.style.transform = `translate(${x * -5}px, ${y * -5}px)`;
+        }
+      });
+    });
+  }
+
+  /* ---- 4. Swipe Scene Transition ---- */
+  _initSwipeTransition() {
+    let startX = 0, startY = 0, startTime = 0;
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      startTime = Date.now();
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      const dt = Date.now() - startTime;
+      if (dt > 500 || Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx)) return;
+      if (this.isTransitioning) return;
+
+      if (dx < 0) {
+        // Swipe left → advance scene
+        if (this.currentScene === 1) {
+          const btn = document.getElementById('enterBtn');
+          if (btn) btn.click();
+        } else if (this.currentScene === 3) {
+          this._continueToScene4();
+        }
+      }
+    }, { passive: true });
   }
 
   /* ---- Safe Destroy (supports objects with stop() or destroy()) ---- */
