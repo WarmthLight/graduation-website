@@ -67,14 +67,14 @@ body {
 }
 
 @keyframes bugEnter {
-  0% { opacity: 0; transform: scale(2) rotate(10deg); filter: drop-shadow(0 0 20px rgba(212,168,83,0.8)) blur(4px); }
-  50% { opacity: 1; transform: scale(0.9) rotate(-5deg); filter: drop-shadow(0 0 10px rgba(201,120,126,0.6)) blur(0); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 6px rgba(212,168,83,0.5)) blur(0); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(10deg); filter: drop-shadow(0 0 20px rgba(212,168,83,0.8)) blur(4px); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(0.9) rotate(-5deg); filter: drop-shadow(0 0 10px rgba(201,120,126,0.6)) blur(0); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); filter: drop-shadow(0 0 6px rgba(212,168,83,0.5)) blur(0); }
 }
 
 @keyframes bugExit {
-  0% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 6px rgba(212,168,83,0.5)) blur(0); }
-  100% { opacity: 0; transform: scale(3) rotate(-15deg); filter: drop-shadow(0 0 25px rgba(139,126,200,0.9)) blur(6px); }
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 6px rgba(212,168,83,0.5)) blur(0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(3) rotate(-15deg); filter: drop-shadow(0 0 25px rgba(139,126,200,0.9)) blur(6px); }
 }
 
 /* ===== Scene System ===== */
