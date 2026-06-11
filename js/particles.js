@@ -464,8 +464,8 @@ class CursorTracker {
   animate() {
     this.animating = true;
     if (this.bugText) {
-      this.bugText.style.left = (this.mouseX + 18) + 'px';
-      this.bugText.style.top = (this.mouseY - 8) + 'px';
+      this.bugText.style.left = this.mouseX + 'px';
+      this.bugText.style.top = this.mouseY + 'px';
     }
     this.animationId = requestAnimationFrame(() => {
       if (this.animating) this.animate();
