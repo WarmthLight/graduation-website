@@ -72,17 +72,17 @@
     </div>
   </section>
 
-  <!-- Scene 4: Gallery - Constellation Network -->
+  <!-- Scene 4: Gallery - Memory Galaxy -->
   <section id="scene4" class="scene">
     <canvas id="galleryBg"></canvas>
-    <h2 class="gallery-title">那些年的记录</h2>
-    <div class="constellation-wrap">
-      <svg class="constellation-lines" id="constellationLines"></svg>
-      <div class="constellation-orbit" id="constellationOrbit">
-        <!-- JS dynamically places photo cards here -->
-      </div>
+    <div class="galaxy-core">
+      <span class="galaxy-title">那些年的记录</span>
     </div>
-    <p class="drag-hint" id="dragHint">← 拖拽旋转 →</p>
+    <div class="galaxy-field" id="galaxyField">
+      <svg class="galaxy-lines" id="galaxyLines"></svg>
+      <!-- JS places photo nodes here -->
+    </div>
+    <p class="drag-hint" id="dragHint">✦ 拖拽探索 ✦</p>
     <div class="leave-hint">
       <button id="leaveBtn" class="pixel-btn leave-btn">准备好了</button>
     </div>
