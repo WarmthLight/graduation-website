@@ -684,10 +684,15 @@ body {
   -webkit-user-select: none;
   will-change: transform;
   background: #111;
+  transition: transform 0.3s ease, box-shadow 0.35s ease;
+}
+
+/* Entrance animation: smooth fly-in from center */
+.galaxy-field.entering .photo-node {
   transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
               top 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-              transform 0.3s ease,
-              box-shadow 0.35s ease;
+              opacity 0.4s ease,
+              transform 0.3s ease, box-shadow 0.35s ease;
 }
 
 .photo-node:hover {

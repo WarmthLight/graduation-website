@@ -288,6 +288,7 @@ class GraduationWebsite {
     /* Place all photos at center first (for entrance animation) */
     const cx = field.clientWidth / 2;
     const cy = field.clientHeight / 2;
+    field.classList.add('entering');
     g.nodes.forEach(node => {
       node.style.left = (cx - g.nodeW / 2) + 'px';
       node.style.top = (cy - g.nodeH / 2) + 'px';
@@ -307,8 +308,8 @@ class GraduationWebsite {
       setTimeout(() => {
         const t = (i + 0.5) / g.count;
         const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-        const W = field ? field.clientWidth : window.innerWidth;
-        const H = field ? field.clientHeight : window.innerHeight;
+        const W = field.clientWidth;
+        const H = field.clientHeight;
         const maxR = Math.min(W, H) * (W < 600 ? 0.38 : 0.42);
         const r = maxR * Math.sqrt(t);
         const theta = i * goldenAngle + g.angle;
@@ -321,7 +322,10 @@ class GraduationWebsite {
 
     /* Start auto-rotation after all photos have flown out */
     const totalDelay = 200 + g.nodes.length * 60 + 800;
-    setTimeout(() => { g.entered = true; }, totalDelay);
+    setTimeout(() => {
+      g.entered = true;
+      field.classList.remove('entering');
+    }, totalDelay);
 
     this._animateGalaxy();
     this._bindGalaxyDrag();
