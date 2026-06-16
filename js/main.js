@@ -602,7 +602,7 @@ class GraduationWebsite {
 
     /* Prevent iOS rubber-band overscroll */
     document.body.addEventListener('touchmove', (e) => {
-      if (e.target.closest('.cert-lightbox')) return;
+      if (e.target.closest('.cert-lightbox') || e.target.closest('.gallery-field')) return;
       e.preventDefault();
     }, { passive: false });
 
