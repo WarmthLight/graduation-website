@@ -72,34 +72,17 @@
     </div>
   </section>
 
-  <!-- Scene 4: Gallery - Particle Planet -->
+  <!-- Scene 4: Gallery - Constellation Network -->
   <section id="scene4" class="scene">
     <canvas id="galleryBg"></canvas>
     <h2 class="gallery-title">那些年的记录</h2>
-    <div class="planet-container">
-      <div class="planet-ring">
-        <div class="planet-item"><img src="images/portrait/双人.jpg" alt="双人照"></div>
-        <div class="planet-item"><img src="images/portrait/群像.jpg" alt="群像照"></div>
-        <div class="planet-item"><img src="images/record/01.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/02.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/03.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/04.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/05.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/06.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/07.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/08.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/09.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/10.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/11.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/12.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/13.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/14.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/15.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/16.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/17.jpg" alt="记录"></div>
-        <div class="planet-item"><img src="images/record/18.jpg" alt="记录"></div>
+    <div class="constellation-wrap">
+      <svg class="constellation-lines" id="constellationLines"></svg>
+      <div class="constellation-orbit" id="constellationOrbit">
+        <!-- JS dynamically places photo cards here -->
       </div>
     </div>
+    <p class="drag-hint" id="dragHint">← 拖拽旋转 →</p>
     <div class="leave-hint">
       <button id="leaveBtn" class="pixel-btn leave-btn">准备好了</button>
     </div>

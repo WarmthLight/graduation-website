@@ -190,6 +190,198 @@ class GraduationWebsite {
       this.galleryBg = new GalleryBackground(galleryCanvas);
       this.galleryBg.animate();
     }
+    this._buildConstellation();
+  }
+
+  /* ---- Constellation Network ---- */
+  _buildConstellation() {
+    const orbit = document.getElementById('constellationOrbit');
+    const svg = document.getElementById('constellationLines');
+    if (!orbit || !svg) return;
+
+    orbit.innerHTML = '';
+    svg.innerHTML = '';
+
+    const photos = [
+      { src: 'images/portrait/双人.jpg', label: '双人合照' },
+      { src: 'images/portrait/群像.jpg', label: '群像合照' },
+      { src: 'images/record/01.jpg', label: '记录' },
+      { src: 'images/record/02.jpg', label: '记录' },
+      { src: 'images/record/03.jpg', label: '记录' },
+      { src: 'images/record/04.jpg', label: '记录' },
+      { src: 'images/record/05.jpg', label: '记录' },
+      { src: 'images/record/06.jpg', label: '记录' },
+      { src: 'images/record/07.jpg', label: '记录' },
+      { src: 'images/record/08.jpg', label: '记录' },
+      { src: 'images/record/09.jpg', label: '记录' },
+      { src: 'images/record/10.jpg', label: '记录' },
+      { src: 'images/record/11.jpg', label: '记录' },
+      { src: 'images/record/12.jpg', label: '记录' },
+      { src: 'images/record/13.jpg', label: '记录' },
+      { src: 'images/record/14.jpg', label: '记录' },
+      { src: 'images/record/15.jpg', label: '记录' },
+      { src: 'images/record/16.jpg', label: '记录' },
+      { src: 'images/record/17.jpg', label: '记录' },
+      { src: 'images/record/18.jpg', label: '记录' },
+    ];
+
+    const count = photos.length;
+    const nodeW = window.innerWidth < 600 ? 55 : window.innerWidth < 900 ? 70 : 90;
+    const nodeH = window.innerWidth < 600 ? 75 : window.innerWidth < 900 ? 95 : 120;
+
+    /* Create photo nodes */
+    photos.forEach((p, i) => {
+      const node = document.createElement('div');
+      node.className = 'photo-node';
+      node.innerHTML = `<img src="${p.src}" alt="${p.label}" draggable="false"><span class="node-label">${p.label}</span>`;
+      node.dataset.index = i;
+      orbit.appendChild(node);
+    });
+
+    /* Layout state */
+    this._constellation = {
+      angle: 0,
+      spinning: true,
+      dragStart: null,
+      dragAngle: 0,
+      nodes: orbit.querySelectorAll('.photo-node'),
+      svg: svg,
+      count: count,
+      nodeW: nodeW,
+      nodeH: nodeH,
+    };
+
+    /* Create SVG lines (adjacent + cross connections) */
+    for (let i = 0; i < count; i++) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.dataset.from = i;
+      line.dataset.to = (i + 1) % count;
+      svg.appendChild(line);
+    }
+    /* Cross connections for visual richness */
+    for (let i = 0; i < count; i++) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.dataset.from = i;
+      line.dataset.to = (i + Math.floor(count / 3)) % count;
+      svg.appendChild(line);
+    }
+
+    this._positionConstellation();
+    this._startConstellationSpin();
+    this._bindConstellationDrag();
+  }
+
+  _positionConstellation() {
+    const c = this._constellation;
+    if (!c) return;
+    const wrap = document.querySelector('.constellation-wrap');
+    if (!wrap) return;
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+    const cx = W / 2;
+    const cy = H / 2;
+    const isMobile = W < 600;
+    const radiusX = isMobile ? W * 0.36 : Math.min(W * 0.38, 380);
+    const radiusY = isMobile ? H * 0.32 : Math.min(H * 0.34, 280);
+
+    c.nodes.forEach((node, i) => {
+      const a = (i / c.count) * Math.PI * 2 + c.angle;
+      const x = cx + Math.cos(a) * radiusX - c.nodeW / 2;
+      const y = cy + Math.sin(a) * radiusY - c.nodeH / 2;
+      node.style.left = x + 'px';
+      node.style.top = y + 'px';
+      node.style.width = c.nodeW + 'px';
+      node.style.height = c.nodeH + 'px';
+    });
+
+    /* Update SVG lines */
+    const lines = c.svg.querySelectorAll('line');
+    lines.forEach(line => {
+      const fromIdx = parseInt(line.dataset.from);
+      const toIdx = parseInt(line.dataset.to);
+      const fromNode = c.nodes[fromIdx];
+      const toNode = c.nodes[toIdx];
+      if (!fromNode || !toNode) return;
+      line.setAttribute('x1', parseFloat(fromNode.style.left) + c.nodeW / 2);
+      line.setAttribute('y1', parseFloat(fromNode.style.top) + c.nodeH / 2);
+      line.setAttribute('x2', parseFloat(toNode.style.left) + c.nodeW / 2);
+      line.setAttribute('y2', parseFloat(toNode.style.top) + c.nodeH / 2);
+    });
+  }
+
+  _startConstellationSpin() {
+    const c = this._constellation;
+    if (!c) return;
+    let lastTime = performance.now();
+
+    const spin = (now) => {
+      if (!this._constellation) return;
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (c.spinning && !c.dragStart) {
+        c.angle += dt * 0.15; /* slow rotation */
+        this._positionConstellation();
+      }
+      c.rafId = requestAnimationFrame(spin);
+    };
+    c.rafId = requestAnimationFrame(spin);
+  }
+
+  _bindConstellationDrag() {
+    const c = this._constellation;
+    if (!c) return;
+    const wrap = document.querySelector('.constellation-wrap');
+    if (!wrap) return;
+
+    const onStart = (x, y) => {
+      c.dragStart = { x, y };
+      c.dragAngle = c.angle;
+      c.spinning = false;
+      const hint = document.getElementById('dragHint');
+      if (hint) hint.style.opacity = '0';
+    };
+
+    const onMove = (x, y) => {
+      if (!c.dragStart) return;
+      const dx = x - c.dragStart.x;
+      c.angle = c.dragAngle + dx * 0.005;
+      this._positionConstellation();
+    };
+
+    const onEnd = () => {
+      c.dragStart = null;
+      /* Resume spinning after 2s idle */
+      clearTimeout(c.spinTimer);
+      c.spinTimer = setTimeout(() => { c.spinning = true; }, 2000);
+    };
+
+    /* Mouse events */
+    wrap.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      onStart(e.clientX, e.clientY);
+    });
+    document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
+    document.addEventListener('mouseup', onEnd);
+
+    /* Touch events */
+    wrap.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      onStart(t.clientX, t.clientY);
+    }, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      onMove(t.clientX, t.clientY);
+    }, { passive: true });
+    document.addEventListener('touchend', onEnd);
+
+    /* Resize handler */
+    window.addEventListener('resize', () => {
+      if (this._constellation) {
+        this._constellation.nodeW = window.innerWidth < 600 ? 55 : window.innerWidth < 900 ? 70 : 90;
+        this._constellation.nodeH = window.innerWidth < 600 ? 75 : window.innerWidth < 900 ? 95 : 120;
+        this._positionConstellation();
+      }
+    });
   }
 
   async _initGraduationScene() {
@@ -231,6 +423,13 @@ class GraduationWebsite {
     this._safeDestroy(this.starrySky);
     this._safeDestroy(this.graduationBubbles);
     this._safeDestroy(this.certificateRing);
+
+    /* Stop constellation animation */
+    if (this._constellation) {
+      if (this._constellation.rafId) cancelAnimationFrame(this._constellation.rafId);
+      clearTimeout(this._constellation.spinTimer);
+      this._constellation = null;
+    }
 
     /* Close leave modal if open */
     const modal = document.getElementById('leaveModal');

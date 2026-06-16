@@ -431,7 +431,7 @@ body {
   background: rgba(201, 120, 126, 0.2);
 }
 
-/* ===== SCENE 4: Gallery - Particle Planet ===== */
+/* ===== SCENE 4: Gallery - Constellation Network ===== */
 #scene4 {
   background: #0a0a12;
   overflow: hidden;
@@ -450,12 +450,12 @@ body {
 
 .gallery-title {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   font-family: var(--font-display);
   font-size: clamp(1.2rem, 3vw, 1.8rem);
   font-weight: 500;
   color: var(--primary-color);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.6s ease 0.2s;
@@ -466,82 +466,108 @@ body {
   transform: translateY(0);
 }
 
-/* 3D Photo Sphere */
-.planet-container {
+/* Constellation Container */
+.constellation-wrap {
   position: relative;
   z-index: 2;
-  width: 400px;
-  height: 400px;
-  perspective: 800px;
-  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-.planet-ring {
+.constellation-lines {
   position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.constellation-lines line {
+  stroke: rgba(212, 168, 83, 0.15);
+  stroke-width: 1;
+  transition: stroke 0.3s ease;
+}
+
+.constellation-lines line.active {
+  stroke: rgba(212, 168, 83, 0.5);
+  stroke-width: 1.5;
+}
+
+.constellation-orbit {
+  position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  animation: planetRotate 30s linear infinite;
 }
 
-@keyframes planetRotate {
-  from { transform: rotateY(0deg) rotateX(10deg); }
-  to { transform: rotateY(360deg) rotateX(10deg); }
-}
-
-.planet-item {
+/* Photo Node */
+.photo-node {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100px;
-  height: 130px;
-  margin: -65px 0 0 -50px;
+  width: 90px;
+  height: 120px;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-  backface-visibility: hidden;
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.planet-item:hover {
-  box-shadow: 0 8px 35px rgba(212, 168, 83, 0.4);
+.photo-node:hover {
+  transform: scale(1.15);
+  box-shadow: 0 10px 35px rgba(212, 168, 83, 0.35);
+  z-index: 100;
 }
 
-.planet-item img {
+.photo-node img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
 }
 
-/* Position 20 items on a sphere */
-.planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(180px); }
-.planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(180px); }
-.planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(180px); }
-.planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(180px); }
-.planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(180px); }
-.planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(180px); }
-.planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(180px); }
-.planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(180px); }
-.planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(180px); }
-.planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(180px); }
-.planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(180px); }
-.planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(180px); }
-.planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(180px); }
-.planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(180px); }
-.planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(180px); }
-.planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(180px); }
-.planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(180px); }
-.planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(180px); }
-.planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(180px); }
-.planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(180px); }
+.photo-node .node-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  font-size: 0.6rem;
+  color: var(--text);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.photo-node:hover .node-label {
+  opacity: 1;
+}
+
+/* Drag Hint */
+.drag-hint {
+  position: relative;
+  z-index: 3;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+  opacity: 0;
+  animation: fadeIn 0.6s forwards 1.5s;
+}
 
 /* Leave Button */
 .leave-hint {
   position: relative;
-  z-index: 2;
-  margin-top: 16px;
+  z-index: 3;
+  margin-top: 8px;
+  margin-bottom: 16px;
   opacity: 0;
-  animation: fadeIn 0.6s forwards 2s;
+  animation: fadeIn 0.6s forwards 2.5s;
 }
 
 .leave-btn {
@@ -785,56 +811,15 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .planet-container { width: 320px; height: 320px; }
-  .planet-item { width: 80px; height: 105px; margin: -52px 0 0 -40px; }
-  .planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(145px); }
-  .planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(145px); }
-  .planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(145px); }
-  .planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(145px); }
-  .planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(145px); }
-  .planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(145px); }
-  .planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(145px); }
-  .planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(145px); }
-  .planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(145px); }
-  .planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(145px); }
-  .planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(145px); }
-  .planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(145px); }
-  .planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(145px); }
-  .planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(145px); }
-  .planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(145px); }
-  .planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(145px); }
-  .planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(145px); }
-  .planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(145px); }
-  .planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(145px); }
-  .planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(145px); }
+  .photo-node { width: 70px; height: 95px; }
   .certificate-ring { width: min(85vw, 450px); height: min(65vh, 400px); }
   .certificate { width: min(110px, 18vw); height: min(140px, 22vh); }
   .char-container { transform: scale(0.7); transform-origin: center center; }
 }
 
 @media (max-width: 600px) {
-  .planet-container { width: 260px; height: 260px; }
-  .planet-item { width: 65px; height: 85px; margin: -42px 0 0 -32px; }
-  .planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(118px); }
-  .planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(118px); }
-  .planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(118px); }
-  .planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(118px); }
-  .planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(118px); }
-  .planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(118px); }
-  .planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(118px); }
-  .planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(118px); }
-  .planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(118px); }
-  .planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(118px); }
-  .planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(118px); }
-  .planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(118px); }
-  .planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(118px); }
-  .planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(118px); }
-  .planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(118px); }
-  .planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(118px); }
-  .planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(118px); }
-  .planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(118px); }
-  .planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(118px); }
-  .planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(118px); }
+  .photo-node { width: 55px; height: 75px; }
+  .drag-hint { display: none; }
   .single-photo { width: 200px; height: 200px; margin-bottom: 24px; }
   .certificate-ring { width: min(90vw, 350px); height: min(60vh, 350px); }
   .certificate { width: min(80px, 15vw); height: min(100px, 18vh); }
@@ -855,7 +840,7 @@ body {
 @media (pointer: coarse) {
   body { cursor: auto !important; }
   .cursor-bug-text { display: none !important; }
-  .single-photo, .pixel-btn, .planet-item, .bgm-toggle, .speech-bubble { cursor: auto !important; }
+  .single-photo, .pixel-btn, .photo-node, .bgm-toggle, .speech-bubble { cursor: auto !important; }
   .certificate { cursor: pointer !important; }
   .cert-lightbox { cursor: default !important; }
   .cert-lightbox-close { cursor: pointer !important; }
@@ -908,7 +893,6 @@ body {
   }
   .single-photo { animation: none; }
   .restart-hint { animation: none; opacity: 0.7; }
-  .planet-ring { animation: none; }
-  .gallery-hint { animation: none; opacity: 0.7; }
+  .drag-hint { animation: none; opacity: 0.7; }
   .leave-hint { animation: none; opacity: 1; }
 }
