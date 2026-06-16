@@ -339,6 +339,7 @@ class GraduationWebsite {
     const photos = g ? g.nodes : [];
 
     /* Build gallery grid */
+    const rotateSet = new Set([3, 5, 6, 7, 9, 16, 17]);
     const grid = document.createElement('div');
     grid.className = 'gallery-grid';
     const allPhotos = [
@@ -354,7 +355,8 @@ class GraduationWebsite {
       const card = document.createElement('div');
       card.className = 'gallery-card';
       card.style.animationDelay = (i * 0.04) + 's';
-      card.innerHTML = `<img src="${src}" alt="照片" draggable="false">`;
+      const imgStyle = rotateSet.has(i) ? ' style="transform:rotate(90deg);object-fit:contain;"' : '';
+      card.innerHTML = `<img src="${src}" alt="照片"${imgStyle} draggable="false">`;
       grid.appendChild(card);
     });
     galleryField.appendChild(grid);
