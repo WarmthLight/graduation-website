@@ -451,24 +451,56 @@ class GraduationWebsite {
     const field = document.getElementById('galaxyField');
     if (!field) return;
 
+    /* Momentum tracking */
+    let lastX = 0, lastTime = 0, velocity = 0;
+    let momentumId = null;
+
     const onStart = (x, y) => {
       if (!g.entered) return;
       g.dragStart = { x, y };
       g.dragAngle = g.angle;
       g.spinning = false;
+      lastX = x;
+      lastTime = performance.now();
+      velocity = 0;
+      if (momentumId) { cancelAnimationFrame(momentumId); momentumId = null; }
     };
 
     const onMove = (x, y) => {
       if (!g.dragStart) return;
+      const now = performance.now();
       const dx = x - g.dragStart.x;
-      g.angle = g.dragAngle + dx * 0.004;
+      g.angle = g.dragAngle + dx * 0.006;
+
+      /* Track velocity for momentum */
+      const dt = now - lastTime;
+      if (dt > 0) {
+        velocity = (x - lastX) / dt * 16; /* normalize to ~60fps frame */
+      }
+      lastX = x;
+      lastTime = now;
+
       this._layoutGalaxy();
     };
 
     const onEnd = () => {
+      if (!g.dragStart) return;
       g.dragStart = null;
-      clearTimeout(g.spinTimer);
-      g.spinTimer = setTimeout(() => { g.spinning = true; }, 2500);
+
+      /* Apply momentum (inertia) */
+      const applyMomentum = () => {
+        if (Math.abs(velocity) < 0.0005) {
+          /* Velocity too low, start auto-spin after delay */
+          clearTimeout(g.spinTimer);
+          g.spinTimer = setTimeout(() => { g.spinning = true; }, 1500);
+          return;
+        }
+        g.angle += velocity;
+        velocity *= 0.95; /* friction */
+        this._layoutGalaxy();
+        momentumId = requestAnimationFrame(applyMomentum);
+      };
+      momentumId = requestAnimationFrame(applyMomentum);
     };
 
     field.addEventListener('mousedown', (e) => {
