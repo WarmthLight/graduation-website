@@ -733,9 +733,6 @@ body {
   min-height: 48px;
   min-width: 48px;
 }
-  opacity: 0;
-  animation: fadeIn 1s forwards 1s;
-}
 
 /* ===== SCENE 5: Graduation Message ===== */
 #scene5 {
