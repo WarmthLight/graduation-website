@@ -325,6 +325,62 @@ class GraduationWebsite {
 
     this._animateGalaxy();
     this._bindGalaxyDrag();
+    this._initModeSwitcher();
+  }
+
+  /* ---- Mode Switcher ---- */
+  _initModeSwitcher() {
+    const switcher = document.getElementById('modeSwitcher');
+    const galaxyField = document.getElementById('galaxyField');
+    const galleryField = document.getElementById('galleryField');
+    if (!switcher || !galaxyField || !galleryField) return;
+
+    const g = this._galaxy;
+    const photos = g ? g.nodes : [];
+
+    /* Build gallery grid */
+    const grid = document.createElement('div');
+    grid.className = 'gallery-grid';
+    const allPhotos = [
+      'images/portrait/双人.jpg', 'images/portrait/群像.jpg',
+      'images/record/01.jpg', 'images/record/02.jpg', 'images/record/03.jpg',
+      'images/record/04.jpg', 'images/record/05.jpg', 'images/record/06.jpg',
+      'images/record/07.jpg', 'images/record/08.jpg', 'images/record/09.jpg',
+      'images/record/10.jpg', 'images/record/11.jpg', 'images/record/12.jpg',
+      'images/record/13.jpg', 'images/record/14.jpg', 'images/record/15.jpg',
+      'images/record/16.jpg', 'images/record/17.jpg', 'images/record/18.jpg',
+    ];
+    allPhotos.forEach((src, i) => {
+      const card = document.createElement('div');
+      card.className = 'gallery-card';
+      card.style.animationDelay = (i * 0.04) + 's';
+      card.innerHTML = `<img src="${src}" alt="照片" draggable="false">`;
+      grid.appendChild(card);
+    });
+    galleryField.appendChild(grid);
+
+    let currentMode = 'galaxy';
+
+    switcher.addEventListener('click', (e) => {
+      const btn = e.target.closest('.mode-btn');
+      if (!btn) return;
+      const mode = btn.dataset.mode;
+      if (mode === currentMode) return;
+
+      switcher.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (mode === 'grid') {
+        galaxyField.style.display = 'none';
+        galleryField.classList.add('active');
+        if (g) g.spinning = false;
+      } else {
+        galaxyField.style.display = '';
+        galleryField.classList.remove('active');
+        if (g) { g.spinning = true; this._layoutGalaxy(); }
+      }
+      currentMode = mode;
+    });
   }
 
   _layoutGalaxy() {

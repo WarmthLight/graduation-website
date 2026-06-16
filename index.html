@@ -82,10 +82,20 @@
   <section id="scene4" class="scene">
     <canvas id="galleryBg"></canvas>
     <div class="galaxy-core"></div>
+    <div class="mode-switcher" id="modeSwitcher">
+      <button class="mode-btn active" data-mode="galaxy">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+        银河
+      </button>
+      <button class="mode-btn" data-mode="grid">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        画廊
+      </button>
+    </div>
     <div class="galaxy-field" id="galaxyField">
       <svg class="galaxy-lines" id="galaxyLines"></svg>
-      <!-- JS places photo nodes here -->
     </div>
+    <div class="gallery-field" id="galleryField"></div>
     <p class="drag-hint" id="dragHint">✦ 拖拽探索 ✦</p>
     <div class="leave-hint">
       <button id="leaveBtn" class="pixel-btn leave-btn">准备好了</button>
