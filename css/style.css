@@ -604,20 +604,52 @@ body {
 }
 
 .gallery-card {
-  border-radius: 10px;
-  overflow: hidden;
-  background: #111;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  position: relative;
+  border-radius: 4px;
+  overflow: visible;
+  background: linear-gradient(135deg, #2a2520, #1a1815);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   opacity: 0;
   transform: translateY(20px);
   animation: cardFadeIn 0.4s ease forwards;
+  /* Art frame: outer shadow + inner bevel */
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 2px rgba(212, 168, 83, 0.15),
+    inset 0 0 0 4px rgba(30, 25, 20, 0.8);
+  border: 3px solid rgba(212, 168, 83, 0.2);
+}
+
+/* Frame corner ornaments */
+.gallery-card::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(212, 168, 83, 0.08);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Inner shadow for depth */
+.gallery-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .gallery-card:hover {
   transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 8px 30px rgba(212, 168, 83, 0.25);
+  box-shadow:
+    0 8px 30px rgba(212, 168, 83, 0.25),
+    inset 0 0 0 2px rgba(212, 168, 83, 0.3),
+    inset 0 0 0 4px rgba(30, 25, 20, 0.8);
+  border-color: rgba(212, 168, 83, 0.35);
 }
 
 .gallery-card:active {
@@ -628,8 +660,10 @@ body {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: contain;
-  background: #111;
+  background: #0e0d0b;
   display: block;
+  padding: 6px;
+  border-radius: 2px;
 }
 
 @keyframes cardFadeIn {
