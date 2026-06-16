@@ -390,8 +390,13 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/certificate/实用新型专利证书.jpg', 'images/certificate/青年科普实验创新.jpg',
     'images/certificate/计算机应用大赛.jpg',
     'images/certificate/provincial-cpp.jpg',
-    'images/certificate/第八届互联网plus.jpg', 'images/certificate/第九届互联网plus.jpg'
+    'images/certificate/第八届互联网plus.jpg', 'images/certificate/第九届互联网plus.jpg',
+    'images/certificate/毕业证.jpg'
   ];
+  // Add record photos
+  for (let i = 1; i <= 18; i++) {
+    images.push('images/record/' + String(i).padStart(2, '0') + '.jpg');
+  }
 
   let loaded = 0;
   let started = false;

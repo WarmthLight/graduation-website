@@ -97,7 +97,6 @@ body {
 
 .scene.active .scene1-content,
 .scene.active .certificate-hall,
-.scene.active .gallery-container,
 .scene.active .graduation-message {
   animation: sceneContentIn 0.6s ease forwards;
 }
@@ -433,6 +432,7 @@ body {
   background: #0a0a12;
   overflow: hidden;
   z-index: 1;
+  flex-direction: column;
 }
 
 #galleryBg {
@@ -444,66 +444,81 @@ body {
   z-index: 1;
 }
 
-.gallery-container {
+.gallery-title {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.6s ease 0.2s;
+}
+
+.scene.active .gallery-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-scroll {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 20px 0;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-grid {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 50px;
-  padding: 40px;
+  gap: 16px;
+  padding: 0 40px;
+  width: max-content;
 }
 
 .gallery-item {
   position: relative;
-  width: 380px;
-  height: 480px;
-  border-radius: 16px;
+  width: 220px;
+  height: 300px;
+  border-radius: 12px;
   overflow: hidden;
-  cursor: none;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  will-change: transform;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
-}
-
-.gallery-item::after {
-  content: attr(data-label);
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text);
-  z-index: 2;
-  opacity: 0;
-  transition: all 0.3s ease;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .gallery-item:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 30px 80px rgba(212, 168, 83, 0.15);
-}
-
-.gallery-item:hover::after {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 20px 60px rgba(212, 168, 83, 0.2);
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 
 .gallery-item:hover img {
   transform: scale(1.08);
+}
+
+.gallery-hint {
+  position: relative;
+  z-index: 2;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 12px;
+  opacity: 0;
+  animation: fadeIn 1s forwards 1s;
 }
 
 /* ===== SCENE 5: Graduation Message ===== */
@@ -519,12 +534,49 @@ body {
   z-index: 1;
 }
 
+.graduation-certificate {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 12px;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s;
+}
+
+.scene.active .graduation-certificate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.graduation-certificate img {
+  width: min(280px, 45vw);
+  max-height: 25vh;
+  border-radius: 10px;
+  box-shadow: 0 15px 50px rgba(212, 168, 83, 0.25);
+  border: 2px solid rgba(212, 168, 83, 0.3);
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.graduation-certificate img:hover {
+  transform: scale(1.05);
+}
+
+.cert-label {
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  margin-top: 8px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
 .graduation-message {
   position: relative;
   z-index: 10;
   width: 90%;
   max-width: 800px;
-  height: 70%;
+  height: 55%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -651,16 +703,15 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .gallery-container { gap: 30px; padding: 20px; }
-  .gallery-item { width: min(320px, 45vw); height: min(400px, 60vh); }
+  .gallery-item { width: 180px; height: 250px; }
   .certificate-ring { width: min(85vw, 450px); height: min(65vh, 400px); }
   .certificate { width: min(110px, 18vw); height: min(140px, 22vh); }
   .char-container { transform: scale(0.7); transform-origin: center center; }
 }
 
 @media (max-width: 600px) {
-  .gallery-container { flex-direction: column; gap: 20px; }
-  .gallery-item { width: min(300px, 85vw); height: min(380px, 45vh); }
+  .gallery-item { width: 150px; height: 210px; }
+  .gallery-grid { gap: 10px; padding: 0 20px; }
   .single-photo { width: 200px; height: 200px; margin-bottom: 24px; }
   .certificate-ring { width: min(90vw, 350px); height: min(60vh, 350px); }
   .certificate { width: min(80px, 15vw); height: min(100px, 18vh); }
@@ -671,7 +722,8 @@ body {
   .question { font-size: 1rem; margin-bottom: 16px; }
   .pixel-btn { padding: 12px 36px; font-size: 0.9rem; }
   .title { margin-bottom: 24px; }
-  .graduation-message { height: 60%; }
+  .graduation-message { height: 50%; }
+  .graduation-certificate img { width: min(200px, 40vw); }
   .restart-hint { bottom: 24px; font-size: 0.75rem; }
   .char-container { transform: scale(0.5); transform-origin: center center; }
 }
