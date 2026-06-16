@@ -283,7 +283,44 @@ class GraduationWebsite {
       svg.appendChild(line);
     }
 
-    this._layoutGalaxy();
+    /* Place all photos at center first (for entrance animation) */
+    const cx = field ? field.clientWidth / 2 : 0;
+    const cy = field ? field.clientHeight / 2 : 0;
+    g.nodes.forEach(node => {
+      node.style.left = (cx - g.nodeW / 2) + 'px';
+      node.style.top = (cy - g.nodeH / 2) + 'px';
+      node.style.opacity = '0';
+      node.style.transform = 'scale(0)';
+    });
+
+    /* Staggered fly-out: opacity + scale up, then move to spiral */
+    g.nodes.forEach((node, i) => {
+      const delay = 200 + i * 60;
+      /* Phase 1: appear at center */
+      setTimeout(() => {
+        node.style.opacity = '1';
+        node.style.transform = 'scale(1)';
+      }, delay);
+      /* Phase 2: fly to spiral position */
+      setTimeout(() => {
+        const t = (i + 0.5) / g.count;
+        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+        const W = field ? field.clientWidth : window.innerWidth;
+        const H = field ? field.clientHeight : window.innerHeight;
+        const maxR = Math.min(W, H) * (W < 600 ? 0.38 : 0.42);
+        const r = maxR * Math.sqrt(t);
+        const theta = i * goldenAngle + g.angle;
+        const x = W / 2 + Math.cos(theta) * r - g.nodeW / 2;
+        const y = H / 2 + Math.sin(theta) * r - g.nodeH / 2;
+        node.style.left = x + 'px';
+        node.style.top = y + 'px';
+      }, delay + 400);
+    });
+
+    /* Start auto-rotation after all photos have flown out */
+    const totalDelay = 200 + g.nodes.length * 60 + 800;
+    setTimeout(() => { g.entered = true; }, totalDelay);
+
     this._animateGalaxy();
     this._bindGalaxyDrag();
   }
@@ -339,7 +376,7 @@ class GraduationWebsite {
       if (!this._galaxy) return;
       const dt = (now - lastTime) / 1000;
       lastTime = now;
-      if (g.spinning && !g.dragStart) {
+      if (g.entered && g.spinning && !g.dragStart) {
         g.angle += dt * 0.12;
         this._layoutGalaxy();
       }
@@ -355,6 +392,7 @@ class GraduationWebsite {
     if (!field) return;
 
     const onStart = (x, y) => {
+      if (!g.entered) return;
       g.dragStart = { x, y };
       g.dragAngle = g.angle;
       g.spinning = false;
