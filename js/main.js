@@ -228,8 +228,9 @@ class GraduationWebsite {
     const count = photos.length;
     const isMobile = window.innerWidth < 600;
     const isTablet = window.innerWidth < 900;
-    const nodeW = isMobile ? 52 : isTablet ? 70 : 90;
-    const nodeH = isMobile ? 69 : isTablet ? 93 : 120;
+    const nodeSize = isMobile ? 56 : isTablet ? 80 : 100;
+    const nodeW = nodeSize;
+    const nodeH = nodeSize;
 
     /* Create photo nodes with spiral positions */
     const nodes = [];
@@ -379,8 +380,9 @@ class GraduationWebsite {
     window.addEventListener('resize', () => {
       if (!this._galaxy) return;
       const w = window.innerWidth;
-      this._galaxy.nodeW = w < 600 ? 52 : w < 900 ? 70 : 90;
-      this._galaxy.nodeH = w < 600 ? 69 : w < 900 ? 93 : 120;
+      const sz = w < 600 ? 56 : w < 900 ? 80 : 100;
+      this._galaxy.nodeW = sz;
+      this._galaxy.nodeH = sz;
       this._galaxy.nodes.forEach(n => {
         n.style.width = this._galaxy.nodeW + 'px';
         n.style.height = this._galaxy.nodeH + 'px';
