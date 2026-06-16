@@ -259,9 +259,10 @@ class GraduationWebsite {
     });
 
     /* Galaxy state */
-    this._galaxy = {
+    const g = this._galaxy = {
       angle: 0,
       spinning: true,
+      entered: false,
       dragStart: null,
       dragAngle: 0,
       nodes: nodes,
@@ -269,7 +270,7 @@ class GraduationWebsite {
       count: count,
       nodeW: nodeW,
       nodeH: nodeH,
-      positions: [], /* cached {x,y} for each node */
+      positions: [],
     };
 
     /* Draw connecting lines between nearby nodes */
@@ -284,8 +285,8 @@ class GraduationWebsite {
     }
 
     /* Place all photos at center first (for entrance animation) */
-    const cx = field ? field.clientWidth / 2 : 0;
-    const cy = field ? field.clientHeight / 2 : 0;
+    const cx = field.clientWidth / 2;
+    const cy = field.clientHeight / 2;
     g.nodes.forEach(node => {
       node.style.left = (cx - g.nodeW / 2) + 'px';
       node.style.top = (cy - g.nodeH / 2) + 'px';
