@@ -559,15 +559,6 @@ body {
   -webkit-user-select: none;
   will-change: transform;
   background: #111;
-  opacity: 0;
-  transform: scale(0);
-  transition: box-shadow 0.35s ease;
-}
-
-.photo-node.revealed {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
 }
 
 /* Gradient animated border */
@@ -1005,6 +996,5 @@ body {
   .galaxy-title { animation: none; opacity: 1; }
   .galaxy-core::before { animation: none; }
   .orbit-ring::after { animation: none; }
-  .photo-node { opacity: 1 !important; transform: none !important; transition: none !important; }
   .photo-node::before { animation: none; }
 }

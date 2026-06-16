@@ -121,58 +121,60 @@ class GraduationWebsite {
   /* ---- Scene Transitions ---- */
   async _startTransition() {
     this.isTransitioning = true;
+    try {
+      await this._hideScene(1);
+      await sleep(200);
 
-    await this._hideScene(1);
-    await sleep(200);
+      this._showScene(2);
+      const meteorCanvas = document.getElementById('meteorShower');
+      if (meteorCanvas) {
+        this._safeDestroy(this.meteorShower);
+        this.meteorShower = new MeteorShower(meteorCanvas);
+        this.meteorShower.animate();
+      }
+      await sleep(2500);
+      if (this.meteorShower) this.meteorShower.stop();
 
-    this._showScene(2);
-    const meteorCanvas = document.getElementById('meteorShower');
-    if (meteorCanvas) {
-      this._safeDestroy(this.meteorShower);
-      this.meteorShower = new MeteorShower(meteorCanvas);
-      this.meteorShower.animate();
-    }
-    await sleep(2500);
-    if (this.meteorShower) this.meteorShower.stop();
+      await this._hideScene(2);
+      await sleep(200);
 
-    await this._hideScene(2);
-    await sleep(200);
-
-    this._showScene(3);
-    await this._initCertificateScene();
+      this._showScene(3);
+      await this._initCertificateScene();
+    } catch (e) { console.error('Transition error:', e); }
     this.isTransitioning = false;
   }
 
   async _continueToScene4() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
+    try {
+      await this._hideScene(3);
+      await sleep(200);
 
-    await this._hideScene(3);
-    await sleep(200);
-
-    this._showScene(4);
-    this._initGalleryScene();
+      this._showScene(4);
+      this._initGalleryScene();
+      this.currentScene = 4;
+    } catch (e) { console.error('Scene4 error:', e); }
     this.isTransitioning = false;
-    this.currentScene = 4;
   }
 
   async _goToScene5() {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
+    try {
+      /* Close modal */
+      const modal = document.getElementById('leaveModal');
+      if (modal) modal.classList.remove('active');
 
-    /* Close modal */
-    const modal = document.getElementById('leaveModal');
-    if (modal) modal.classList.remove('active');
+      await sleep(300);
+      await this._hideScene(4);
+      await sleep(200);
 
-    await sleep(300);
-    await this._hideScene(4);
-    await sleep(200);
-
-    this._showScene(5);
-    await this._initGraduationScene();
-
+      this._showScene(5);
+      await this._initGraduationScene();
+      this.currentScene = 5;
+    } catch (e) { console.error('Scene5 error:', e); }
     this.isTransitioning = false;
-    this.currentScene = 5;
   }
 
   async _initCertificateScene() {
@@ -282,12 +284,6 @@ class GraduationWebsite {
     }
 
     this._layoutGalaxy();
-
-    /* Staggered entrance animation */
-    g.nodes.forEach((node, i) => {
-      setTimeout(() => node.classList.add('revealed'), 150 + i * 80);
-    });
-
     this._animateGalaxy();
     this._bindGalaxyDrag();
   }
