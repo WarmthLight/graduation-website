@@ -216,7 +216,7 @@ class GraduationWebsite {
       field.appendChild(ring);
     });
 
-    const rotateSet = new Set([3, 5, 6, 7, 9, 16]); /* 02,04,05,06,08,15 */
+    const rotateSet = new Set([3, 5, 6, 7, 9, 16, 17]); /* 02,04,05,06,08,15,16 */
     const photos = [
       { src: 'images/portrait/双人.jpg' },
       { src: 'images/portrait/群像.jpg' },
