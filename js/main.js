@@ -356,7 +356,7 @@ class GraduationWebsite {
       card.className = 'gallery-card';
       card.style.animationDelay = (i * 0.04) + 's';
       const imgStyle = rotateSet.has(i) ? ' style="transform:rotate(90deg);object-fit:contain;"' : '';
-      card.innerHTML = `<img src="${src}" alt="照片"${imgStyle} draggable="false">`;
+      card.innerHTML = `<div class="card-img-wrap"><img src="${src}" alt="照片"${imgStyle} draggable="false"></div>`;
       grid.appendChild(card);
     });
     galleryField.appendChild(grid);

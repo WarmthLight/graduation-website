@@ -656,14 +656,18 @@ body {
   transform: scale(0.97);
 }
 
+.card-img-wrap {
+  overflow: hidden;
+  border-radius: 2px;
+  padding: 6px;
+  background: #0e0d0b;
+}
+
 .gallery-card img {
   width: 100%;
   aspect-ratio: 3/4;
   object-fit: contain;
-  background: #0e0d0b;
   display: block;
-  padding: 6px;
-  border-radius: 2px;
 }
 
 @keyframes cardFadeIn {
