@@ -92,7 +92,7 @@ class GraduationWebsite {
     }
 
     document.addEventListener('click', (e) => {
-      if (e.target.closest('.pixel-btn') || e.target.closest('.certificate-hall') || e.target.closest('.cert-lightbox')) return;
+      if (e.target.closest('.pixel-btn') || e.target.closest('.certificate-hall') || e.target.closest('.cert-lightbox') || e.target.closest('.leave-modal')) return;
       createPixelExplosion(e.clientX, e.clientY, () => this._playClickSound());
     });
 
@@ -100,6 +100,17 @@ class GraduationWebsite {
       if (this.currentScene === 3 && !this.isTransitioning && e.target.closest('.certificate-hall')) {
         this._continueToScene4();
       }
+    });
+
+    /* Leave button → show confirm modal */
+    document.getElementById('leaveBtn')?.addEventListener('click', () => {
+      const modal = document.getElementById('leaveModal');
+      if (modal) modal.classList.add('active');
+    });
+
+    /* Confirm leave → go to scene 5 */
+    document.getElementById('confirmLeaveBtn')?.addEventListener('click', () => {
+      this._goToScene5();
     });
 
     document.getElementById('scene5')?.addEventListener('click', () => {
@@ -141,8 +152,19 @@ class GraduationWebsite {
 
     this._showScene(4);
     this._initGalleryScene();
-    await sleep(3500);
+    this.isTransitioning = false;
+    this.currentScene = 4;
+  }
 
+  async _goToScene5() {
+    if (this.isTransitioning) return;
+    this.isTransitioning = true;
+
+    /* Close modal */
+    const modal = document.getElementById('leaveModal');
+    if (modal) modal.classList.remove('active');
+
+    await sleep(300);
     await this._hideScene(4);
     await sleep(200);
 
@@ -209,6 +231,10 @@ class GraduationWebsite {
     this._safeDestroy(this.starrySky);
     this._safeDestroy(this.graduationBubbles);
     this._safeDestroy(this.certificateRing);
+
+    /* Close leave modal if open */
+    const modal = document.getElementById('leaveModal');
+    if (modal) modal.classList.remove('active');
 
     this.scenes.forEach(s => {
       s.classList.remove('active', 'blurred');

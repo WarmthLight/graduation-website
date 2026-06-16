@@ -427,7 +427,7 @@ body {
   background: rgba(201, 120, 126, 0.2);
 }
 
-/* ===== SCENE 4: Gallery ===== */
+/* ===== SCENE 4: Gallery - Particle Planet ===== */
 #scene4 {
   background: #0a0a12;
   overflow: hidden;
@@ -451,7 +451,7 @@ body {
   font-size: clamp(1.2rem, 3vw, 1.8rem);
   font-weight: 500;
   color: var(--primary-color);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.6s ease 0.2s;
@@ -462,61 +462,135 @@ body {
   transform: translateY(0);
 }
 
-.gallery-scroll {
+/* 3D Photo Sphere */
+.planet-container {
   position: relative;
   z-index: 2;
+  width: 400px;
+  height: 400px;
+  perspective: 800px;
+  margin: 0 auto;
+}
+
+.planet-ring {
+  position: absolute;
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 20px 0;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: planetRotate 30s linear infinite;
 }
 
-.gallery-scroll::-webkit-scrollbar {
-  display: none;
+@keyframes planetRotate {
+  from { transform: rotateY(0deg) rotateX(10deg); }
+  to { transform: rotateY(360deg) rotateX(10deg); }
 }
 
-.gallery-grid {
-  display: flex;
-  gap: 16px;
-  padding: 0 40px;
-  width: max-content;
-}
-
-.gallery-item {
-  position: relative;
-  width: 220px;
-  height: 300px;
-  border-radius: 12px;
+.planet-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 130px;
+  margin: -65px 0 0 -50px;
+  border-radius: 8px;
   overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  backface-visibility: hidden;
+  transition: box-shadow 0.3s ease;
 }
 
-.gallery-item:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 20px 60px rgba(212, 168, 83, 0.2);
+.planet-item:hover {
+  box-shadow: 0 8px 35px rgba(212, 168, 83, 0.4);
 }
 
-.gallery-item img {
+.planet-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
 }
 
-.gallery-item:hover img {
-  transform: scale(1.08);
-}
+/* Position 20 items on a sphere */
+.planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(180px); }
+.planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(180px); }
+.planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(180px); }
+.planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(180px); }
+.planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(180px); }
+.planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(180px); }
+.planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(180px); }
+.planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(180px); }
+.planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(180px); }
+.planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(180px); }
+.planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(180px); }
+.planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(180px); }
+.planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(180px); }
+.planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(180px); }
+.planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(180px); }
+.planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(180px); }
+.planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(180px); }
+.planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(180px); }
+.planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(180px); }
+.planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(180px); }
 
-.gallery-hint {
+/* Leave Button */
+.leave-hint {
   position: relative;
   z-index: 2;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  margin-top: 12px;
+  margin-top: 16px;
+  opacity: 0;
+  animation: fadeIn 0.6s forwards 2s;
+}
+
+.leave-btn {
+  padding: 10px 36px;
+  font-size: 0.9rem;
+}
+
+/* Confirm Modal */
+.leave-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.leave-modal.active {
+  background: rgba(0, 0, 0, 0.75);
+  visibility: visible;
+  opacity: 1;
+}
+
+.leave-modal-content {
+  background: rgba(22, 22, 31, 0.95);
+  border: 1px solid rgba(212, 168, 83, 0.3);
+  border-radius: 16px;
+  padding: 40px 50px;
+  text-align: center;
+  transform: scale(0.8) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(10px);
+}
+
+.leave-modal.active .leave-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.leave-modal-text {
+  font-size: 1.3rem;
+  color: var(--text);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+.confirm-btn {
+  padding: 12px 48px;
+  font-size: 1rem;
+}
   opacity: 0;
   animation: fadeIn 1s forwards 1s;
 }
@@ -703,15 +777,56 @@ body {
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .gallery-item { width: 180px; height: 250px; }
+  .planet-container { width: 320px; height: 320px; }
+  .planet-item { width: 80px; height: 105px; margin: -52px 0 0 -40px; }
+  .planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(145px); }
+  .planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(145px); }
+  .planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(145px); }
+  .planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(145px); }
+  .planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(145px); }
+  .planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(145px); }
+  .planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(145px); }
+  .planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(145px); }
+  .planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(145px); }
+  .planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(145px); }
+  .planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(145px); }
+  .planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(145px); }
+  .planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(145px); }
+  .planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(145px); }
+  .planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(145px); }
+  .planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(145px); }
+  .planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(145px); }
+  .planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(145px); }
+  .planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(145px); }
+  .planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(145px); }
   .certificate-ring { width: min(85vw, 450px); height: min(65vh, 400px); }
   .certificate { width: min(110px, 18vw); height: min(140px, 22vh); }
   .char-container { transform: scale(0.7); transform-origin: center center; }
 }
 
 @media (max-width: 600px) {
-  .gallery-item { width: 150px; height: 210px; }
-  .gallery-grid { gap: 10px; padding: 0 20px; }
+  .planet-container { width: 260px; height: 260px; }
+  .planet-item { width: 65px; height: 85px; margin: -42px 0 0 -32px; }
+  .planet-item:nth-child(1)  { transform: rotateY(0deg) translateZ(118px); }
+  .planet-item:nth-child(2)  { transform: rotateY(18deg) translateZ(118px); }
+  .planet-item:nth-child(3)  { transform: rotateY(36deg) translateZ(118px); }
+  .planet-item:nth-child(4)  { transform: rotateY(54deg) translateZ(118px); }
+  .planet-item:nth-child(5)  { transform: rotateY(72deg) translateZ(118px); }
+  .planet-item:nth-child(6)  { transform: rotateY(90deg) translateZ(118px); }
+  .planet-item:nth-child(7)  { transform: rotateY(108deg) translateZ(118px); }
+  .planet-item:nth-child(8)  { transform: rotateY(126deg) translateZ(118px); }
+  .planet-item:nth-child(9)  { transform: rotateY(144deg) translateZ(118px); }
+  .planet-item:nth-child(10) { transform: rotateY(162deg) translateZ(118px); }
+  .planet-item:nth-child(11) { transform: rotateY(180deg) translateZ(118px); }
+  .planet-item:nth-child(12) { transform: rotateY(198deg) translateZ(118px); }
+  .planet-item:nth-child(13) { transform: rotateY(216deg) translateZ(118px); }
+  .planet-item:nth-child(14) { transform: rotateY(234deg) translateZ(118px); }
+  .planet-item:nth-child(15) { transform: rotateY(252deg) translateZ(118px); }
+  .planet-item:nth-child(16) { transform: rotateY(270deg) translateZ(118px); }
+  .planet-item:nth-child(17) { transform: rotateY(288deg) translateZ(118px); }
+  .planet-item:nth-child(18) { transform: rotateY(306deg) translateZ(118px); }
+  .planet-item:nth-child(19) { transform: rotateY(324deg) translateZ(118px); }
+  .planet-item:nth-child(20) { transform: rotateY(342deg) translateZ(118px); }
   .single-photo { width: 200px; height: 200px; margin-bottom: 24px; }
   .certificate-ring { width: min(90vw, 350px); height: min(60vh, 350px); }
   .certificate { width: min(80px, 15vw); height: min(100px, 18vh); }
@@ -732,7 +847,7 @@ body {
 @media (pointer: coarse) {
   body { cursor: auto !important; }
   .cursor-bug-text { display: none !important; }
-  .single-photo, .pixel-btn, .gallery-item, .bgm-toggle, .speech-bubble { cursor: auto !important; }
+  .single-photo, .pixel-btn, .planet-item, .bgm-toggle, .speech-bubble { cursor: auto !important; }
   .certificate { cursor: pointer !important; }
   .cert-lightbox { cursor: default !important; }
   .cert-lightbox-close { cursor: pointer !important; }
@@ -750,22 +865,6 @@ body {
     filter: blur(5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     transform: none;
-  }
-  .gallery-item:hover {
-    transform: none;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  }
-  .gallery-item:active {
-    transform: translateY(-12px) scale(1.03);
-    box-shadow: 0 30px 80px rgba(212, 168, 83, 0.15);
-  }
-  .gallery-item:hover::after {
-    opacity: 0;
-    transform: translateX(-50%) translateY(10px);
-  }
-  .gallery-item:active::after {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
   }
   .speech-bubble:active {
     transform: scale(1.15) !important;
