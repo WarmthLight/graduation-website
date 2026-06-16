@@ -34,6 +34,7 @@ body {
   min-height: 100dvh;
   min-height: 100vh; /* fallback */
   cursor: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ===== Custom Cursor ===== */
@@ -112,8 +113,8 @@ body {
   top: 20px;
   right: 20px;
   z-index: 9999;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1.5px solid rgba(212, 168, 83, 0.3);
   background: rgba(12, 12, 20, 0.6);
@@ -125,6 +126,7 @@ body {
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  touch-action: manipulation;
 }
 
 .bgm-toggle:hover {
@@ -231,6 +233,8 @@ body {
   cursor: none;
   transition: transform 0.2s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 20px rgba(212, 168, 83, 0.2);
+  touch-action: manipulation;
+  min-height: 44px;
 }
 
 .pixel-btn:hover {
@@ -541,8 +545,10 @@ body {
 }
 
 .leave-btn {
-  padding: 10px 36px;
+  padding: 12px 36px;
   font-size: 0.9rem;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 /* Confirm Modal */
@@ -588,8 +594,10 @@ body {
 }
 
 .confirm-btn {
-  padding: 12px 48px;
+  padding: 14px 52px;
   font-size: 1rem;
+  min-height: 48px;
+  min-width: 48px;
 }
   opacity: 0;
   animation: fadeIn 1s forwards 1s;
@@ -876,6 +884,22 @@ body {
 }
 
 /* ===== Reduced Motion ===== */
+/* ===== Focus States (Accessibility) ===== */
+.pixel-btn:focus-visible,
+.leave-btn:focus-visible,
+.confirm-btn:focus-visible,
+.bgm-toggle:focus-visible,
+#enterBtn:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+.planet-item:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ===== Reduced Motion ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -884,4 +908,7 @@ body {
   }
   .single-photo { animation: none; }
   .restart-hint { animation: none; opacity: 0.7; }
+  .planet-ring { animation: none; }
+  .gallery-hint { animation: none; opacity: 0.7; }
+  .leave-hint { animation: none; opacity: 1; }
 }
