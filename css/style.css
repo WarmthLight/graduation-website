@@ -140,6 +140,14 @@ body {
   color: var(--text-dim);
 }
 
+.bgm-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.bgm-toggle:hover svg {
+  transform: scale(1.1);
+}
+
 /* ===== SCENE 1: Entrance ===== */
 #scene1 {
   background: var(--bg);

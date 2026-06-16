@@ -49,7 +49,6 @@ class GraduationWebsite {
         this.bgm.volume = 0.35;
         this.bgm.play().then(() => {
           this.bgmPlaying = true;
-          if (this.bgmBtn) this.bgmBtn.textContent = '♫';
         }).catch(() => {});
       }
       document.removeEventListener('click', tryPlay);
