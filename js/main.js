@@ -238,7 +238,6 @@ class GraduationWebsite {
     ];
 
     const count = photos.length;
-    const isMobile = window.innerWidth < 600;
     const isTablet = window.innerWidth < 900;
     const nodeSize = isMobile ? 56 : isTablet ? 80 : 100;
     const nodeW = nodeSize;
