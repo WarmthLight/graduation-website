@@ -458,23 +458,42 @@ body {
   pointer-events: none;
 }
 
+.galaxy-core::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 168, 83, 0.08) 0%, transparent 70%);
+  animation: corePulse 4s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+}
+
 .galaxy-title {
+  position: relative;
   font-family: var(--font-display);
   font-size: clamp(1rem, 2.5vw, 1.6rem);
   font-weight: 500;
   color: var(--primary-color);
-  text-shadow: 0 0 30px rgba(212, 168, 83, 0.4), 0 0 60px rgba(212, 168, 83, 0.15);
+  text-shadow: 0 0 30px rgba(212, 168, 83, 0.5), 0 0 60px rgba(212, 168, 83, 0.2);
   white-space: nowrap;
   opacity: 0;
   animation: galaxyPulse 3s ease-in-out infinite, fadeIn 0.8s forwards 0.5s;
 }
 
 @keyframes galaxyPulse {
-  0%, 100% { text-shadow: 0 0 30px rgba(212, 168, 83, 0.4), 0 0 60px rgba(212, 168, 83, 0.15); }
-  50% { text-shadow: 0 0 40px rgba(212, 168, 83, 0.6), 0 0 80px rgba(212, 168, 83, 0.25); }
+  0%, 100% { text-shadow: 0 0 30px rgba(212, 168, 83, 0.5), 0 0 60px rgba(212, 168, 83, 0.2); }
+  50% { text-shadow: 0 0 50px rgba(212, 168, 83, 0.7), 0 0 100px rgba(212, 168, 83, 0.3); }
 }
 
-/* Galaxy Field - holds all photo nodes */
+/* Orbit Rings */
 .galaxy-field {
   position: absolute;
   inset: 0;
@@ -486,6 +505,38 @@ body {
   cursor: grabbing;
 }
 
+.orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 168, 83, 0.06);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.orbit-ring::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(212, 168, 83, 0.3);
+  box-shadow: 0 0 8px rgba(212, 168, 83, 0.4);
+  animation: orbitDot 8s linear infinite;
+}
+
+.orbit-ring:nth-child(2)::after { animation-duration: 12s; animation-delay: -3s; }
+.orbit-ring:nth-child(3)::after { animation-duration: 16s; animation-delay: -7s; }
+
+@keyframes orbitDot {
+  from { transform: rotate(0deg) translateX(var(--orbit-r)) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+}
+
+/* Galaxy Lines */
 .galaxy-lines {
   position: absolute;
   inset: 0;
@@ -494,7 +545,7 @@ body {
 }
 
 .galaxy-lines line {
-  stroke: rgba(212, 168, 83, 0.08);
+  stroke: rgba(212, 168, 83, 0.06);
   stroke-width: 0.5;
 }
 
@@ -503,13 +554,43 @@ body {
   position: absolute;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
   user-select: none;
   -webkit-user-select: none;
   will-change: transform;
   background: #111;
+  opacity: 0;
+  transform: scale(0);
+  transition: box-shadow 0.35s ease;
+}
+
+.photo-node.revealed {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+}
+
+/* Gradient animated border */
+.photo-node::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  background: conic-gradient(from var(--border-angle, 0deg), var(--primary-color), var(--secondary-color), var(--accent-color), var(--primary-color));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+  animation: borderRotate 4s linear infinite;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes borderRotate {
+  to { --border-angle: 360deg; }
 }
 
 .photo-node::after {
@@ -517,28 +598,34 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 10px;
-  border: 1px solid rgba(212, 168, 83, 0.15);
+  border: 1px solid rgba(212, 168, 83, 0.12);
   pointer-events: none;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.photo-node:hover {
-  transform: scale(1.2);
-  box-shadow: 0 8px 30px rgba(212, 168, 83, 0.3), 0 0 20px rgba(212, 168, 83, 0.1);
-  z-index: 100;
+.photo-node:hover::before {
+  opacity: 1;
 }
 
 .photo-node:hover::after {
-  border-color: rgba(212, 168, 83, 0.5);
+  border-color: transparent;
+  box-shadow: inset 0 0 20px rgba(212, 168, 83, 0.1);
+}
+
+.photo-node:hover {
+  box-shadow: 0 8px 35px rgba(212, 168, 83, 0.3), 0 0 30px rgba(212, 168, 83, 0.1);
+  z-index: 100;
 }
 
 .photo-node img {
+  position: relative;
   width: 100%;
   height: 100%;
   object-fit: contain;
   pointer-events: none;
   display: block;
   background: #111;
+  border-radius: 10px;
 }
 
 .photo-node .node-label {
@@ -547,7 +634,7 @@ body {
   left: 0;
   right: 0;
   padding: 6px 0 4px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
   font-size: 0.6rem;
   color: var(--text);
   text-align: center;
@@ -572,7 +659,7 @@ body {
   color: var(--text-dim);
   letter-spacing: 0.15em;
   opacity: 0;
-  animation: fadeIn 0.6s forwards 2s, fadeOut 0.6s forwards 6s;
+  animation: fadeIn 0.6s forwards 2s, fadeOut 0.6s forwards 7s;
   pointer-events: none;
 }
 
@@ -916,6 +1003,11 @@ body {
   }
   .single-photo { animation: none; }
   .restart-hint { animation: none; opacity: 0.7; }
-  .drag-hint { animation: none; opacity: 0.7; }
+  .drag-hint { animation: none; opacity: 0; }
   .leave-hint { animation: none; opacity: 1; }
+  .galaxy-title { animation: none; opacity: 1; }
+  .galaxy-core::before { animation: none; }
+  .orbit-ring::after { animation: none; }
+  .photo-node { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .photo-node::before { animation: none; }
 }

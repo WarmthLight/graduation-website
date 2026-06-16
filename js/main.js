@@ -202,6 +202,18 @@ class GraduationWebsite {
     field.innerHTML = '';
     svg.innerHTML = '';
 
+    /* Create orbit rings */
+    const isMobile = window.innerWidth < 600;
+    const ringRadii = isMobile ? [60, 100, 140] : [100, 170, 250];
+    ringRadii.forEach((r, i) => {
+      const ring = document.createElement('div');
+      ring.className = 'orbit-ring';
+      ring.style.width = r * 2 + 'px';
+      ring.style.height = r * 2 + 'px';
+      ring.style.setProperty('--orbit-r', r + 'px');
+      field.appendChild(ring);
+    });
+
     const photos = [
       { src: 'images/portrait/双人.jpg', label: '双人合照' },
       { src: 'images/portrait/群像.jpg', label: '群像合照' },
@@ -271,6 +283,12 @@ class GraduationWebsite {
     }
 
     this._layoutGalaxy();
+
+    /* Staggered entrance animation */
+    g.nodes.forEach((node, i) => {
+      setTimeout(() => node.classList.add('revealed'), 150 + i * 80);
+    });
+
     this._animateGalaxy();
     this._bindGalaxyDrag();
   }
