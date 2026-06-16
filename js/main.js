@@ -216,9 +216,10 @@ class GraduationWebsite {
       field.appendChild(ring);
     });
 
+    const rotateSet = new Set([3, 5, 6, 7, 9, 16]); /* 02,04,05,06,08,15 */
     const photos = [
-      { src: 'images/portrait/双人.jpg', label: '双人合照' },
-      { src: 'images/portrait/群像.jpg', label: '群像合照' },
+      { src: 'images/portrait/双人.jpg' },
+      { src: 'images/portrait/群像.jpg' },
       { src: 'images/record/01.jpg' },
       { src: 'images/record/02.jpg' },
       { src: 'images/record/03.jpg' },
@@ -252,7 +253,8 @@ class GraduationWebsite {
       node.className = 'photo-node';
       node.style.width = nodeW + 'px';
       node.style.height = nodeH + 'px';
-      node.innerHTML = `<img src="${p.src}" alt="${p.label || '照片'}" draggable="false"><span class="node-label">${p.label || ''}</span>`;
+      const imgStyle = rotateSet.has(i) ? ' style="transform:rotate(90deg);object-fit:contain;"' : '';
+      node.innerHTML = `<img src="${p.src}" alt="照片"${imgStyle} draggable="false"><span class="node-label"></span>`;
       node.dataset.index = i;
       field.appendChild(node);
       nodes.push(node);
